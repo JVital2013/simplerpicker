@@ -1,5 +1,5 @@
 {
-  "name": "simplepicker",
+  "name": "simplerpicker",
   "version": "2.0.4",
   "description": "Simple date picker written in vanilla js.",
   "main": "./dist/simplepicker.node.js",
@@ -15,7 +15,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/priyank-p/simplepicker.git"
+    "url": "git+ssh://git@github.com:JVital2013/simplerpicker.git"
   },
   "keywords": [
     "simple",
@@ -24,12 +24,12 @@
     "datepicker",
     "date-picker"
   ],
-  "author": "Priyank Patel <priyankp390@gmail.com>",
+  "author": "Jamie Vital <jvital2013@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/priyankp10/simplepicker/issues"
+    "url": "https://github.com/JVital2013/simplerpicker/issues"
   },
-  "homepage": "https://github.com/priyankp10/simplepicker#readme",
+  "homepage": "https://github.com/JVital2013/simplerpicker#readme",
   "devDependencies": {
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.2.3",

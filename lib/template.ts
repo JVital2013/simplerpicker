@@ -8,26 +8,24 @@ function repeat(str: string, times: number): string {
 }
 
 export const htmlTemplate = `
-<div class="simplepicker-wrapper">
+<div class="simplerpicker-wrapper">
   <div class="simpilepicker-date-picker">
-    <div class="simplepicker-day-header"></div>
-      <div class="simplepicker-date-section">
-        <div class="simplepicker-month-and-year"></div>
-        <div class="simplepicker-date"></div>
-        <div class="simplepicker-select-pane">
-          <button type="button" class="simplepicker-icon simplepicker-icon-calender active" title="Select date from calender!"></button>
-          <div class="simplepicker-time">12:00 PM</div>
-          <button type="button" class="simplepicker-icon simplepicker-icon-time" title="Select time"></button>
+    <div class="simplerpicker-day-header"></div>
+      <div class="simplerpicker-date-section">
+        <div class="simplerpicker-month-and-year"></div>
+        <div class="simplerpicker-date"></div>
+        <div class="simplerpicker-time-section">
+          <input type="time" value="12:00">
         </div>
       </div>
-      <div class="simplepicker-picker-section">
-        <div class="simplepicker-calender-section">
-          <div class="simplepicker-month-switcher simplepicker-select-pane">
-            <button type="button" class="simplepicker-icon simplepicker-icon-previous"></button>
-            <div class="simplepicker-selected-date"></div>
-            <button type="button" class="simplepicker-icon simplepicker-icon-next"></button>
+      <div class="simplerpicker-picker-section">
+        <div class="simplerpicker-calender-section">
+          <div class="simplerpicker-month-switcher simplerpicker-select-pane">
+            <button type="button" class="simplerpicker-icon simplerpicker-icon-previous"></button>
+            <div class="simplerpicker-selected-date"></div>
+            <button type="button" class="simplerpicker-icon simplerpicker-icon-next"></button>
           </div>
-          <div class="simplepicker-calender">
+          <div class="simplerpicker-calender">
             <table>
               <thead>
                 <tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>
@@ -38,13 +36,12 @@ export const htmlTemplate = `
             </table>
           </div>
         </div>
-        <div class="simplepicker-time-section">
-          <input type="time" value="12:00" autofocus="false">
-        </div>
       </div>
-      <div class="simplepicker-bottom-part">
-        <button type="button" class="simplepicker-cancel-btn simplepicker-btn" title="Cancel">Cancel</button>
-        <button type="button" class="simplepicker-ok-btn simplepicker-btn" title="OK">OK</button>
+      <div class="simplerpicker-bottom-part">
+        <button type="button" class="simplerpicker-today-btn simplerpicker-btn" title="Today">Today</button>
+        <button type="button" class="simplerpicker-cancel-btn simplerpicker-btn" title="Cancel">Cancel</button>
+        <button type="button" class="simplerpicker-ok-btn simplerpicker-btn" title="OK">OK</button>
+        <div class='simplerpicker-clearfloat'></div>
       </div>
   </div>
 </div>

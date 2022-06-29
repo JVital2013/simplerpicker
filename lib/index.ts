@@ -1,11 +1,10 @@
 import * as dateUtil from './date-util';
 import { htmlTemplate } from './template';
 
-type SimplePickerEvent = 'submit' | 'close';
-interface SimplePickerOpts {
+type SimplerPickerEvent = 'submit' | 'close';
+interface SimplerPickerOpts {
   zIndex?: number;
   compactMode?: boolean;
-  disableTimeSection?: boolean;
   selectedDate?: Date;
 }
 
@@ -20,46 +19,45 @@ interface EventHandlers {
 }
 
 const today = new Date();
-class SimplePicker {
+class SimplerPicker {
   selectedDate: Date;
-  $simplePicker: HTMLElement;
+  $simplerPicker: HTMLElement;
   readableDate: string;
   _eventHandlers: EventHandlers;
   _validOnListeners = validListeners;
 
-  private opts: SimplePickerOpts;
+  private opts: SimplerPickerOpts;
   private $: Function;
   private $$: Function;
-  private $simplepicker: HTMLElement;
-  private $simplepickerWrapper: HTMLElement;
+  private $simplerpicker: HTMLElement;
+  private $simplerpickerWrapper: HTMLElement;
   private $trs: HTMLElement[];
   private $tds: HTMLElement[];
   private $headerMonthAndYear: HTMLElement;
   private $monthAndYear: HTMLElement;
   private $date: HTMLElement;
   private $day: HTMLElement;
-  private $time: HTMLElement;
   private $timeInput: HTMLInputElement;
-  private $timeSectionIcon: HTMLElement;
   private $cancel: HTMLElement;
   private $ok: HTMLElement;
+  private $today: HTMLElement;
   private $displayDateElements: HTMLElement[];
 
-  constructor(arg1?: HTMLElement | string | SimplePickerOpts, arg2?: SimplePickerOpts) {
+  constructor(arg1?: HTMLElement | string | SimplerPickerOpts, arg2?: SimplerPickerOpts) {
     let el: HTMLElement | undefined = undefined;
-    let opts: SimplePickerOpts | undefined = arg2;
+    let opts: SimplerPickerOpts | undefined = arg2;
 
     if (typeof arg1 === 'string') {
       const element = <HTMLElement> document.querySelector(arg1);
       if (element !== null) {
         el = element;
       } else {
-        throw new Error('Invalid selector passed to SimplePicker!');
+        throw new Error('Invalid selector passed to SimplerPicker!');
       }
     } else if (arg1 instanceof HTMLElement) {
       el = arg1;
     } else if (typeof arg1 === 'object') {
-      opts = arg1 as SimplePickerOpts;
+      opts = arg1 as SimplerPickerOpts;
     }
 
     if (!el) {
@@ -79,7 +77,7 @@ class SimplePicker {
   }
 
   // We use $, $$ as helper method to conviently select
-  // element we need for simplepicker.
+  // element we need for simplerpicker.
   // Also, Limit the query to the wrapper class to avoid
   // selecting elements on the other instance.
   initElMethod(el) {
@@ -87,23 +85,22 @@ class SimplePicker {
     this.$$ = (sel) => el.querySelectorAll(sel);
   }
 
-  init(el: HTMLElement, opts: SimplePickerOpts) {
-    this.$simplepickerWrapper = <HTMLElement> el.querySelector('.simplepicker-wrapper');
-    this.initElMethod(this.$simplepickerWrapper);
+  init(el: HTMLElement, opts: SimplerPickerOpts) {
+    this.$simplerpickerWrapper = <HTMLElement> el.querySelector('.simplerpicker-wrapper');
+    this.initElMethod(this.$simplerpickerWrapper);
 
     const { $, $$ } = this;
-    this.$simplepicker = $('.simpilepicker-date-picker');
-    this.$trs = $$('.simplepicker-calender tbody tr');
-    this.$tds = $$('.simplepicker-calender tbody td');
-    this.$headerMonthAndYear = $('.simplepicker-month-and-year');
-    this.$monthAndYear = $('.simplepicker-selected-date');
-    this.$date = $('.simplepicker-date');
-    this.$day = $('.simplepicker-day-header');
-    this.$time = $('.simplepicker-time');
-    this.$timeInput = $('.simplepicker-time-section input');
-    this.$timeSectionIcon = $('.simplepicker-icon-time');
-    this.$cancel = $('.simplepicker-cancel-btn');
-    this.$ok = $('.simplepicker-ok-btn');
+    this.$simplerpicker = $('.simpilepicker-date-picker');
+    this.$trs = $$('.simplerpicker-calender tbody tr');
+    this.$tds = $$('.simplerpicker-calender tbody td');
+    this.$headerMonthAndYear = $('.simplerpicker-month-and-year');
+    this.$monthAndYear = $('.simplerpicker-selected-date');
+    this.$date = $('.simplerpicker-date');
+    this.$day = $('.simplerpicker-day-header');
+    this.$timeInput = $('.simplerpicker-time-section input');
+    this.$cancel = $('.simplerpicker-cancel-btn');
+    this.$ok = $('.simplerpicker-ok-btn');
+    this.$today = $('.simplerpicker-today-btn');
 
     this.$displayDateElements = [
       this.$day,
@@ -111,7 +108,6 @@ class SimplePicker {
       this.$date
     ];
 
-    this.$time.classList.add('simplepicker-fade');
     this.render(dateUtil.scrapeMonth(today));
 
     opts = opts || {};
@@ -120,11 +116,7 @@ class SimplePicker {
     this.reset(opts.selectedDate || today);
 
     if (opts.zIndex !== undefined) {
-      this.$simplepickerWrapper.style.zIndex = opts.zIndex.toString();
-    }
-
-    if (opts.disableTimeSection) {
-      this.disableTimeSection();
+      this.$simplerpickerWrapper.style.zIndex = opts.zIndex.toString();
     }
 
     if (opts.compactMode) {
@@ -142,7 +134,6 @@ class SimplePicker {
     const timeFull = date.toTimeString().split(" ")[0]
     const time = timeFull.replace(/\:\d\d$/, "");
     this.$timeInput.value = time;
-    this.$time.innerText = dateUtil.formatTimeFromInputElement(time);
 
     const dateString = date.getDate().toString();
     const $dateEl = this.findElementWithDate(dateString);
@@ -155,16 +146,6 @@ class SimplePicker {
   compactMode() {
     const { $date } = this;
     $date.style.display = 'none';
-  }
-
-  disableTimeSection() {
-    const { $timeSectionIcon } = this;
-    $timeSectionIcon.style.visibility = 'hidden';
-  }
-
-  enableTimeSection() {
-    const { $timeSectionIcon } = this;
-    $timeSectionIcon.style.visibility = 'visible';
   }
 
   injectTemplate(el: HTMLElement) {
@@ -232,7 +213,7 @@ class SimplePicker {
   }
 
   updateSelectedDate(el?: HTMLElement) {
-    const { $monthAndYear, $time, $date } = this;
+    const { $monthAndYear, $timeInput, $date } = this;
 
     let day;
     if (el) {
@@ -243,29 +224,21 @@ class SimplePicker {
 
     const [ monthName, year ] = $monthAndYear.innerHTML.split(' ');
     const month = dateUtil.months.indexOf(monthName);
-    let timeComponents = $time.innerHTML.split(':');
+    let timeComponents = $timeInput.value.split(':');
     let hours = +timeComponents[0];
-    let [ minutes, meridium ] = timeComponents[1].split(' ');
-
-    if (meridium === 'AM' && hours == 12) {
-      hours = 0;
-    }
-
-    if (meridium === 'PM' && hours < 12) {
-      hours += 12;
-    }
+    let minutes = timeComponents[1];
 
     const date = new Date(+year, +month, +day, +hours, +minutes);
     this.selectedDate = date;
 
     let _date = day + ' ';
     _date += $monthAndYear.innerHTML.trim() + ' ';
-    _date += $time.innerHTML.trim();
+    _date += $timeInput.value.trim();
     this.readableDate = _date.replace(/^\d+/, date.getDate().toString());
   }
 
   selectDateElement(el: HTMLElement) {
-    const alreadyActive = this.$('.simplepicker-calender tbody .active');
+    const alreadyActive = this.$('.simplerpicker-calender tbody .active');
     el.classList.add('active');
     if (alreadyActive) {
       alreadyActive.classList.remove('active');
@@ -299,40 +272,14 @@ class SimplePicker {
 
   handleIconButtonClick(el: HTMLElement) {
     const { $ } = this;
-    const baseClass = 'simplepicker-icon-';
+    const baseClass = 'simplerpicker-icon-';
     const nextIcon = baseClass + 'next';
     const previousIcon = baseClass + 'previous';
     const calenderIcon = baseClass + 'calender';
     const timeIcon = baseClass + 'time';
 
-    if (el.classList.contains(calenderIcon)) {
-      const $timeIcon = $('.' + timeIcon);
-      const $timeSection = $('.simplepicker-time-section');
-      const $calenderSection = $('.simplepicker-calender-section');
-
-      $calenderSection.style.display = 'block';
-      $timeSection.style.display = 'none';
-      $timeIcon.classList.remove('active');
-      el.classList.add('active');
-      this.toogleDisplayFade();
-      return;
-    }
-
-    if (el.classList.contains(timeIcon)) {
-      const $calenderIcon = $('.' + calenderIcon);
-      const $calenderSection = $('.simplepicker-calender-section');
-      const $timeSection = $('.simplepicker-time-section');
-
-      $timeSection.style.display = 'block';
-      $calenderSection.style.display = 'none';
-      $calenderIcon.classList.remove('active');
-      el.classList.add('active');
-      this.toogleDisplayFade();
-      return;
-    }
-
     let selectedDate;
-    const $active = $('.simplepicker-calender td.active');
+    const $active = $('.simplerpicker-calender td.active');
     if ($active) {
       selectedDate = $active.innerHTML.trim();
     }
@@ -353,11 +300,11 @@ class SimplePicker {
 
   initListeners() {
     const {
-      $simplepicker, $timeInput,
-      $ok, $cancel, $simplepickerWrapper
+      $simplerpicker, $timeInput, $today,
+      $ok, $cancel, $simplerpickerWrapper
     } = this;
     const _this = this;
-    $simplepicker.addEventListener('click', function (e) {
+    $simplerpicker.addEventListener('click', function (e) {
       const target = e.target as HTMLElement;
       const tagName = target.tagName.toLowerCase();
 
@@ -368,7 +315,7 @@ class SimplePicker {
       }
 
       if (tagName === 'button' &&
-          target.classList.contains('simplepicker-icon')) {
+          target.classList.contains('simplerpicker-icon')) {
         _this.handleIconButtonClick(target);
         return;
       }
@@ -380,9 +327,12 @@ class SimplePicker {
       }
 
       const formattedTime = dateUtil.formatTimeFromInputElement(e.target.value);
-      _this.$time.innerHTML = formattedTime;
       _this.updateSelectedDate();
     });
+    
+    $today.addEventListener('click', function () {
+    	_this.reset();
+    })
 
     $ok.addEventListener('click', function () {
       _this.close();
@@ -397,10 +347,10 @@ class SimplePicker {
     };
 
     $cancel.addEventListener('click', close);
-    $simplepickerWrapper.addEventListener('click', close);
+    $simplerpickerWrapper.addEventListener('click', close);
   }
 
-  callEvent(event: SimplePickerEvent, dispatcher: (a: HandlerFunction) => void) {
+  callEvent(event: SimplerPickerEvent, dispatcher: (a: HandlerFunction) => void) {
     const listeners = this._eventHandlers[event] || [];
     listeners.forEach(function (func: HandlerFunction) {
       dispatcher(func);
@@ -408,15 +358,15 @@ class SimplePicker {
   }
 
   open() {
-    this.$simplepickerWrapper.classList.add('active');
+    this.$simplerpickerWrapper.classList.add('active');
   }
 
   // can be called by user or by click the cancel btn.
   close() {
-    this.$simplepickerWrapper.classList.remove('active');
+    this.$simplerpickerWrapper.classList.remove('active');
   }
 
-  on(event: SimplePickerEvent, handler: HandlerFunction) {
+  on(event: SimplerPickerEvent, handler: HandlerFunction) {
     const { _validOnListeners, _eventHandlers } = this;
     if (!_validOnListeners.includes(event)) {
       throw new Error('Not a valid event!');
@@ -427,11 +377,10 @@ class SimplePicker {
   }
 
   toogleDisplayFade() {
-    this.$time.classList.toggle('simplepicker-fade');
     this.$displayDateElements.forEach($el => {
-      $el.classList.toggle('simplepicker-fade');
+      $el.classList.toggle('simplerpicker-fade');
     });
   }
 }
 
-export = SimplePicker;
+export = SimplerPicker;

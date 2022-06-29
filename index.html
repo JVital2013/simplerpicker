@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="dist/simplepicker.css">
-  <title>simplepicker</title>
+  <link rel="stylesheet" href="dist/simplerpicker.css">
+  <title>simplerpicker</title>
 
   <style>
     .event-log {
@@ -22,29 +22,29 @@
   </style>
 </head>
 <body>
-  <button class="simplepicker-btn">Show Picker</button>
+  <button class="simplerpicker-btn">Show Picker</button>
   <div class="event-log">Event logs:<br></div>
 
-  <script src="dist/simplepicker.js"></script>
+  <script src="dist/simplerpicker.js"></script>
   <script>
-    let simplepicker = new SimplePicker({
+    let simplerpicker = new SimplerPicker({
       zIndex: 10
     });
 
-    simplepicker.open();
+    simplerpicker.open();
 
     const $button = document.querySelector('button');
     const $eventLog = document.querySelector('.event-log');
     $button.addEventListener('click', (e) => {
-      simplepicker.open();
+      simplerpicker.open();
     });
 
     // $eventLog.innerHTML += '\n\n';
-    simplepicker.on('submit', (date, readableDate) => {
+    simplerpicker.on('submit', (date, readableDate) => {
       $eventLog.innerHTML += readableDate + '\n';
     });
 
-    simplepicker.on('close', (date) => {
+    simplerpicker.on('close', (date) => {
       $eventLog.innerHTML += 'Picker Closed'  + '\n';
     });
   </script>

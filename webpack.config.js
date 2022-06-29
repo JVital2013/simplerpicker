@@ -7,15 +7,15 @@ module.exports = function (env) {
   const production = env === 'production';
   let config = {
     entry: {
-      simplepicker: [
-        './lib/simplepicker.css',
+      simplerpicker: [
+        './lib/simplerpicker.css',
         './lib/index.ts'
       ]
     },
     output: {
       filename: '[name].js',
       path: path.resolve(ROOT_DIR, 'dist'),
-      library: 'SimplePicker',
+      library: 'SimplerPicker',
       libraryTarget: 'var'
     },
     resolve: {
@@ -70,7 +70,7 @@ module.exports = function (env) {
     let nodeConfig = { output: {} };
     nodeConfig.output.libraryTarget = 'commonjs2';
     nodeConfig.entry = {
-      'simplepicker.node': './lib/index.ts'
+      'simplerpicker.node': './lib/index.ts'
     };
 
     config = [ config, { ...config, ...nodeConfig } ];
