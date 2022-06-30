@@ -240,7 +240,7 @@ class SimplerPicker {
   selectDateElement(el: HTMLElement) {
     const alreadyActive = this.$('.simplerpicker-calender tbody .active');
     el.classList.add('active');
-    if (alreadyActive) {
+    if (alreadyActive && alreadyActive != el) {
       alreadyActive.classList.remove('active');
     }
 
